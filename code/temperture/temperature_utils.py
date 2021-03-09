@@ -291,10 +291,10 @@ class AggregatedTimeTrace:
         self.y_cid = self.yearly_ax.figure.canvas.mpl_connect(
             "pick_event", self._yearly_on_pick
         )
-        self.y_cid = self.yearly_ax.figure.canvas.mpl_connect(
+        self.m_cid = self.yearly_ax.figure.canvas.mpl_connect(
             "pick_event", self._monthly_on_pick
         )
-        self.y_cid = self.yearly_ax.figure.canvas.mpl_connect(
+        self.d_cid = self.yearly_ax.figure.canvas.mpl_connect(
             "pick_event", self._daily_on_pick
         )
 
