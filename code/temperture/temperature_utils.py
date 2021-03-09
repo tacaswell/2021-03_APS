@@ -1,5 +1,4 @@
 import datetime
-import os
 from pathlib import Path
 
 from cycler import cycler
@@ -7,7 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def aggregate_by_month(df, col='T'):
+def aggregate_by_month(df, col="T"):
     """Given a data frame of hourly data, compute statistics by month
 
     Parameters
@@ -24,14 +23,14 @@ def aggregate_by_month(df, col='T'):
        Indexed on the 15th of the month,
        Has columns of `describe` + 'year' and 'month'
     """
-    gb = df.groupby(['year', 'month'])[col].describe()
-    new_index = [datetime.date(*m, *(15, )) for m in gb.index]
+    gb = df.groupby(["year", "month"])[col].describe()
+    new_index = [datetime.date(*m, *(15,)) for m in gb.index]
     gb.reset_index(inplace=True)
     gb.index = new_index
     return gb
 
 
-def aggregate_by_day(df, col='T'):
+def aggregate_by_day(df, col="T"):
     """Given a data frame of hourly data, compute statistics by day
 
     Parameters
@@ -49,7 +48,7 @@ def aggregate_by_day(df, col='T'):
        Has columns of `describe` + 'year', 'month', and 'day'
     """
 
-    gb = df.groupby(['year', 'month', 'day'])[col].describe()
+    gb = df.groupby(["year", "month", "day"])[col].describe()
     new_index = [datetime.date(*m) for m in gb.index]
     gb.reset_index(inplace=True)
     gb.index = new_index
@@ -73,7 +72,7 @@ def extract_month_of_daily(daily, year, month):
     DataFrame
          Indexed on days from start of month.  Same columns as input
     """
-    ix = (daily['month'] == month) & (daily['year'] == year)
+    ix = (daily["month"] == month) & (daily["year"] == year)
     df = daily[ix]
     idx = [(m - df.index[0]).days for m in df.index]
     df.reset_index(inplace=True)
@@ -94,9 +93,11 @@ def extract_day_of_hourly(hourly_df, year, month, day):
         The day to extract the data for
     """
 
-    ix = ((hourly_df['month'] == month) &
-          (hourly_df['year'] == year) &
-          (hourly_df['day'] == day))
+    ix = (
+        (hourly_df["month"] == month)
+        & (hourly_df["year"] == year)
+        & (hourly_df["day"] == day)
+    )
     df = hourly_df[ix]
     midnight = datetime.datetime(year, month, day, 0, 0)
     df.index = [(m - midnight).seconds / 3600 for m in df.index]
@@ -104,7 +105,7 @@ def extract_day_of_hourly(hourly_df, year, month, day):
 
 
 def label_date(ax, label, date, df):
-    '''Helper function to annotate a date
+    """Helper function to annotate a date
 
     ``date`` is assumed to be in the index of ``df``
 
@@ -122,13 +123,16 @@ def label_date(ax, label, date, df):
     df : DataFrame
         The data source
 
-    '''
-    y = df.loc[date]['mean']
-    return ax.annotate(label, (date, y),
-                       ha='right',
-                       xytext=(-10, -30),
-                       textcoords='offset points',
-                       arrowprops={'arrowstyle': '->'})
+    """
+    y = df.loc[date]["mean"]
+    return ax.annotate(
+        label,
+        (date, y),
+        ha="right",
+        xytext=(-10, -30),
+        textcoords="offset points",
+        arrowprops={"arrowstyle": "->"},
+    )
 
 
 def load_data(dataset):
@@ -144,25 +148,26 @@ def load_data(dataset):
     DataFrame
        Hourly temperature data
     """
-    p = Path(os.path.dirname(os.path.realpath(__file__))) / 'data'
-    fname = p / f'{dataset}.h5'
+    p = Path(".") / "data"
+    fname = p / f"{dataset}.h5"
 
     try:
         return pd.read_hdf(str(fname))
     except FileNotFoundError:
-        sources = {f.stem for f in p.iterdir() if
-                   f.is_file() and f.name.endswith('h5')}
-        raise RuntimeError(f"Could not not find {dataset!r}.  Existing "
-                           f"datasets are {sources}")
+        sources = {f.stem for f in p.iterdir() if f.is_file() and f.name.endswith("h5")}
+        raise RuntimeError(
+            f"Could not not find {dataset!r}.  Existing " f"datasets are {sources}"
+        )
 
 
 def setup_temperature_figure(**kwargs):
     fig, ax_lst = plt.subplots(3, 1, sharey=True, **kwargs)
     for ax in ax_lst:
-        ax.set_ylabel('T [℃]')
+        ax.set_ylabel("T [℃]")
         ax.grid(True)
-    for ax, x_lab in zip(ax_lst, ['Date', 'days from rt of month',
-                                  'hours from midnight UTC']):
+    for ax, x_lab in zip(
+        ax_lst, ["Date", "days from rt of month", "hours from midnight UTC"]
+    ):
         ax.set_xlabel(x_lab)
     ax_lst[1].set_xlim(-1, 32)
     ax_lst[2].set_xlim(-1, 25)
@@ -170,26 +175,39 @@ def setup_temperature_figure(**kwargs):
     return fig, ax_lst
 
 
-def plot_aggregated_errorbar(ax, gb, label, picker=None, **kwargs):
-    kwargs.setdefault('capsize', 3)
-    kwargs.setdefault('markersize', 5)
-    eb = ax.errorbar(gb.index, 'mean',
-                     yerr='std',
-                     data=gb,
-                     label=label,
-                     picker=picker,
-                     **kwargs)
-    fill = ax.fill_between(gb.index, 'min', 'max', alpha=.5,
-                           data=gb, color=eb[0].get_color())
+def plot_aggregated_errorbar(ax, gb, label, pickradius=None, **kwargs):
+    kwargs.setdefault("capsize", 3)
+    kwargs.setdefault("markersize", 5)
+    eb = ax.errorbar(
+        gb.index,
+        "mean",
+        yerr="std",
+        data=gb,
+        label=label,
+        pickradius=pickradius,
+        **kwargs,
+    )
+    fill = ax.fill_between(
+        gb.index, "min", "max", alpha=0.5, data=gb, color=eb[0].get_color()
+    )
     ax.legend()
     ax.figure.canvas.draw_idle()
     return eb, fill
 
 
 class AggregatedTimeTrace:
-    def __init__(self, hourly_data, label, yearly_ax, monthly_ax, daily_ax,
-                 agg_by_day=None, agg_by_month=None, style_cycle=None):
-        '''Class to manage 3-levels of aggregated temperature
+    def __init__(
+        self,
+        hourly_data,
+        label,
+        yearly_ax,
+        monthly_ax,
+        daily_ax,
+        agg_by_day=None,
+        agg_by_month=None,
+        style_cycle=None,
+    ):
+        """Class to manage 3-levels of aggregated temperature
 
         Parameters
         ----------
@@ -221,7 +239,7 @@ class AggregatedTimeTrace:
         style_cycle : Cycler, optional
             Style to use for plotting
 
-        '''
+        """
         # data
         self.data_by_hour = hourly_data
         if agg_by_day is None:
@@ -232,13 +250,23 @@ class AggregatedTimeTrace:
         self.data_by_month = agg_by_month
         # style
         if style_cycle is None:
-            style_cycle = ((cycler('marker', ['o', 's', '^', '*',
-                                              'x', 'v', '8', 'D',
-                                              'H', '<']) +
-                            cycler('color',
-                                   ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
-                                    '#9467bd', '#8c564b', '#e377c2', '#7f7f7f',
-                                    '#bcbd22', '#17becf'])))
+            style_cycle = cycler(
+                "marker", ["o", "s", "^", "*", "x", "v", "8", "D", "H", "<"]
+            ) + cycler(
+                "color",
+                [
+                    "#1f77b4",
+                    "#ff7f0e",
+                    "#2ca02c",
+                    "#d62728",
+                    "#9467bd",
+                    "#8c564b",
+                    "#e377c2",
+                    "#7f7f7f",
+                    "#bcbd22",
+                    "#17becf",
+                ],
+            )
         self.style_cycle = style_cycle()
         # axes
         self.yearly_ax = yearly_ax
@@ -251,23 +279,27 @@ class AggregatedTimeTrace:
         self.daily_index = {}
         self.hourly_artiists = {}
         # artists
-        self.yearly_art = plot_aggregated_errorbar(self.yearly_ax,
-                                                   self.data_by_month,
-                                                   self.label,
-                                                   picker=5,
-                                                   **next(self.style_cycle))
+        self.yearly_art = plot_aggregated_errorbar(
+            self.yearly_ax,
+            self.data_by_month,
+            self.label,
+            picker=5,
+            **next(self.style_cycle),
+        )
 
         # pick methods
         self.y_cid = self.yearly_ax.figure.canvas.mpl_connect(
-            'pick_event', self._yearly_on_pick)
+            "pick_event", self._yearly_on_pick
+        )
         self.y_cid = self.yearly_ax.figure.canvas.mpl_connect(
-            'pick_event', self._monthly_on_pick)
+            "pick_event", self._monthly_on_pick
+        )
         self.y_cid = self.yearly_ax.figure.canvas.mpl_connect(
-            'pick_event', self._daily_on_pick)
+            "pick_event", self._daily_on_pick
+        )
 
     def _yearly_on_pick(self, event):
-        '''Process picks on 'year' scale axes
-        '''
+        """Process picks on 'year' scale axes"""
         # if not the right axes, bail
         if event.mouseevent.inaxes is not self.yearly_ax:
             return
@@ -277,37 +309,37 @@ class AggregatedTimeTrace:
         # loop over the points we hit and plot the 'month' scale data
         for i in event.ind:
             row = self.data_by_month.iloc[i]
-            self._plot_T_by_day(int(row['year']), int(row['month']))
+            self._plot_T_by_day(int(row["year"]), int(row["month"]))
 
     def _plot_T_by_day(self, year, month):
         # get the data we need
         df = extract_month_of_daily(self.data_by_day, year, month)
         # format the label
-        label = '{:s}: {:04d}-{:02d}'.format(self.label, year, month)
+        label = "{:s}: {:04d}-{:02d}".format(self.label, year, month)
         # if we have already plotted this, don't bother
         if label in self.daily_artists:
             return
         # plot the data
-        eb, fill = plot_aggregated_errorbar(self.monthly_ax, df, label,
-                                            picker=5, **next(self.style_cycle))
+        eb, fill = plot_aggregated_errorbar(
+            self.monthly_ax, df, label, picker=5, **next(self.style_cycle)
+        )
         # set the gid of the line (which is what will be picked) to label
         eb[0].set_gid(label)
         # stash the artists so we can remove them later
         self.daily_artists[label] = [eb, fill]
         # stash the dates associated with the points so we can use in
         # plotting later
-        self.daily_index[label] = df['index']
+        self.daily_index[label] = df["index"]
 
     def _monthly_on_pick(self, event):
-        '''Process picks on 'month' scale axes
-        '''
+        """Process picks on 'month' scale axes"""
         # if we are not in the right axes, bail
         if event.mouseevent.inaxes is not self.monthly_ax:
             return
         # get the label from the picked aritst
         label = event.artist.get_gid()
         # if the shift key is held down, remove this data
-        if event.mouseevent.key == 'shift':
+        if event.mouseevent.key == "shift":
             self.daily_index.pop(label, None)
             arts = self.daily_artists.pop(label, [])
             for art in arts:
@@ -322,11 +354,11 @@ class AggregatedTimeTrace:
             return
         # else, loop through the points we hit and plot the daily
         for i in event.ind:
-            print(f'{label=} {i=}')
+            print(f"{label=} {i=}")
             try:
                 sel_date = self.daily_index[label][i]
             except KeyError:
-                print(f'failed on {label=} {i=}')
+                print(f"failed on {label=} {i=}")
             else:
                 self._plot_T_by_hour(sel_date.year, sel_date.month, sel_date.day)
 
@@ -334,11 +366,11 @@ class AggregatedTimeTrace:
         # get the hourly data for a single day
         df = extract_day_of_hourly(self.data_by_hour, year, month, day)
         # format the label
-        label = '{:s}: {:04d}-{:02d}-{:02d}'.format(
-            self.label, year, month, day)
+        label = "{:s}: {:04d}-{:02d}-{:02d}".format(self.label, year, month, day)
         # A 'simple' plot
-        self.daily_ax.plot('T', '-', picker=10, label=label, data=df,
-                           **next(self.style_cycle))
+        self.daily_ax.plot(
+            "T", "-", picker=10, label=label, data=df, **next(self.style_cycle)
+        )
         # update the legend
         self.daily_ax.legend()
         # ask the GUI to redraw the next time it can
@@ -361,16 +393,3 @@ class AggregatedTimeTrace:
             art.remove()
         self.yearly_art = None
         self.yearly_ax.figure.canvas.mpl_disconnect(self.cid)
-
-
-# temperature = load_data('mdw')
-temperature = ith
-fig, (ax_by_month, ax_by_day, ax_by_hour) = setup_temperature_figure()
-temperature_at = AggregatedTimeTrace(temperature, 'temperature',
-                                     ax_by_month, ax_by_day, ax_by_hour)
-fig.suptitle('Temperature')
-plt.show()
-
-# EXERCISE (15 minutes)
-# - plot 3 day windows centered on picked day
-# - cycle through min/max, std bands, and no bands on key stroke
