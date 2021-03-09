@@ -361,17 +361,27 @@ def load_data(dataset):
 
 
 def setup_temperature_figure(**kwargs):
-    fig, ax_lst = plt.subplots(3, 1, sharey=True, **kwargs)
+    fig, ax_lst = plt.subplots(3, 1, sharey=True, **kwargs, constrained_layout=True)
     for ax in ax_lst:
         ax.set_ylabel("T [℃]")
         ax.grid(True)
     for ax, x_lab in zip(
-        ax_lst, ["Date", "days from rt of month", "hours from midnight UTC"]
+        ax_lst, ["Date", "days from start of month", "hours from midnight UTC"]
     ):
         ax.set_xlabel(x_lab)
+
+    for ax, x_lab in zip(
+        ax_lst,
+        [
+            "Click to show monthly data",
+            "Click to show hourly data, shift-click to remove",
+            "click to remove ",
+        ],
+    ):
+        ax.set_title(x_lab)
     ax_lst[1].set_xlim(-1, 32)
     ax_lst[2].set_xlim(-1, 25)
-    fig.tight_layout()
+    ax_lst[0].set_ylim(-30, 40)
     return fig, ax_lst
 
 
