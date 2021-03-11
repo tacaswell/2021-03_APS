@@ -43,8 +43,9 @@ class XRFInteract(object):
         if fig is None:
             import matplotlib.pyplot as plt
             fig = plt.figure(tight_layout=True)
-        # clear the figure
-        fig.clf()
+        else:
+            # clear the figure
+            fig.clf()
         # set the window title (look at the tool bar)
         fig.canvas.set_window_title('XRF map')
         self.fig = fig
