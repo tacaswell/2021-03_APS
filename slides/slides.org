@@ -60,8 +60,6 @@ Recent funding from Chan Zuckerberg Initiative (2020-present)
 \includegraphics[width=.75\linewidth]{timeline.pdf}
 \end{center}
 
-** Gallery
-
 
 * Why make plots?
 ** What is visualization for?
@@ -119,21 +117,22 @@ Recent funding from Chan Zuckerberg Initiative (2020-present)
 
 ** Future Work
 
-- On going bug fixes, incremental improvements, and maintenance
-- Improvements to Figure and Axes layout (Jody Klymak)
+- On going incremental improvements, bug fixes, and maintenance
+- Improvements to Figure and Axes layout tooling (Jody Klymak)
 - Re-designing Matplotlib's internal data model (Hannah Aizenman)
 
 ** Resources
 
 This material: https://github.com/tacaswell/2021-03_APS
 
-- chat: https://gitter.im/matplotlib
-- forum: https://discourse.matplotlib.org
 - docs: https://matplotlib.org/stable
 - cheatsheets: https://github.com/matplotlib/cheatsheets
+- chat: https://gitter.im/matplotlib
+- forum: https://discourse.matplotlib.org
 - tutorials: https://github.com/matplotlib/interactive_tutorial,
   https://github.com/matplotlib/AnatomyOfMatplotlib
-  https://github.com/matplotlib/GettingStarted,
+  https://github.com/matplotlib/GettingStarted
+
 
 - _Interactive Applications Using Matplotlib_, Benjamin V. Root (2015)
 - domain-specific libraries
