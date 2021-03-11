@@ -41,11 +41,13 @@ def _plot_several(ax, d, fits):
 
 
 def subfigure_label(ax, text):
-    ann = ax.annotate(
+    return ax.annotate(
         text,
         # units are (axes-fraction, axes-fraction)
-        # this is bottom right
-        xy=(1, 0),
+        # # this is bottom right
+        # xy=(1, 0),
+        # this is the top left
+        xy=(0, 1),
         xycoords="axes fraction",
         # units are absolute offset in points from xy
         xytext=(-5, 5),
@@ -56,7 +58,6 @@ def subfigure_label(ax, text):
         fontweight="bold",
         fontsize="larger",
     )
-    return ann
 
 
 def plot_one(ax, m, popt, offset=0):

@@ -198,46 +198,17 @@ class XRFInteract(object):
         self.fig.canvas.draw_idle()
 
 
-# def make_text_demo(inp='BNL', n_chan=1000):
-#     '''Make some synthetic data
-#     '''
-#     from matplotlib.figure import Figure
-#     from matplotlib.backends.backend_agg import FigureCanvas
-#     fig = Figure()
-#     canvas = FigureCanvas(fig)
-#     canvas.draw()
-#     im_shape = fig.canvas.get_width_height()[::-1] + (3,)
-#     t = fig.text(.5, .5, '', fontsize=350, ha='center', va='center')
-#     counts = np.random.rand(*(im_shape[:2] + (n_chan,)))
-#     x = np.linspace(0, 1, n_chan)
-#     for j, l in enumerate(inp):
-#         t.set_text(l)
-#         fig.canvas.draw()
-#         im = np.fromstring(fig.canvas.tostring_rgb(),
-#                            dtype=np.uint8).reshape(im_shape)
-#         im = 255 - np.mean(im, axis=2, keepdims=True)
-#         counts += (150 * im * np.exp(-500 * ((1+j)/(len(inp) + 1) - x)**2)
-#                    .reshape(1, 1, -1))
-#         del im
-#
-#     return counts
-#
-#
-# counts = make_text_demo()
-# N, M = counts.shape[:2]
-# X, Y = np.meshgrid(range(M), range(N))
-# pos = np.stack([.01*X + 100, .01*Y + 50])
-#
-# xrf = XRFInteract(counts, pos)
+def show_xrf(fn):
+    F = h5py.File(fn, 'r')
+    g = F['xrfmap']
 
-# to look at a data file
-fn = 'scan_3624.h5'
-F = h5py.File(fn, 'r')
-g = F['xrfmap']
+    xrf = XRFInteract(g['detsum']['counts'][:], g['positions']['pos'][:],
+                      norm=g['scalers']['val'][:, :, 0])
 
-xrf = XRFInteract(g['detsum']['counts'][:], g['positions']['pos'][:],
-                  norm=g['scalers']['val'][:, :, 0])
-
-# un comment out this line to use 'interacitve' mode
-# plt.ion()
-plt.show()
+    return xrf
+    
+if __name__ == '__main__':
+    # to look at a data file
+    fn = 'scan_3624.h5'
+    show_xrf(fn)
+    plt.show()

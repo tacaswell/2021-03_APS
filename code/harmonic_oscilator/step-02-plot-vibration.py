@@ -75,6 +75,25 @@ print(popt._repr_latex_())
 # plt.legend(usetex=True)
 #
 
+def plot_one(ax, m, popt, offset=0):
+    # pull what we want out of the xarray
+    control = float(m.coords["control"])
+    t = m.coords["time"]
+    z = m.values
+
+    (ln,) = ax.plot(t, z + offset, label=f"C: {control:.1f}")
+    (fit,) = ax.plot(t, popt.sample(t) + offset, color="k")
+    ann = ax.annotate(
+        f"$C={control:.1f}$\n$\\zeta={popt.zeta:.2g}$ $\\omega_0={popt.omega:.2f}$",
+        # units are (axes-fraction, data)
+        xy=(0.95, offset + 0.5),
+        xycoords=ax.get_yaxis_transform(),
+        # set the text alignment
+        ha="right",
+        va="bottom",
+    )
+    return {"raw": ln, "fit": fit, "annotation": ann}
+
 
 fig, ax = plt.subplots()
 plot_one(ax, d[0], fit(d[0]))
