@@ -1,0 +1,143 @@
+#+TITLE:     Matplotlib and Scientific Visualization
+#+AUTHOR:    Thomas A Caswell
+#+EMAIL:     tcaswell@gmail.com, tcaswell@bnl.gov
+#+DATE:      2021-03-17
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+STARTUP: beamer
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [aspectratio=169]
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col)
+#+LATEX_HEADER: \usepackage{pgfpages}
+#+latex_header: \setbeamertemplate{navigation symbols}{}
+# #+LATEX_HEADER: \setbeameroption{show notes on second screen}
+
+* Introduction
+** Who am I?
+    :PROPERTIES:
+    :BEAMER_opt: t
+    :END:
+
+ - Trained as a physicist
+   - Jamming + dynamics of Leidenfrost drops with Nagel and Gardel at UChicago
+ - <2-> Currently in Data Science and System Integration program at NSLS-II
+ - <2-> Current Project Lead of Matplotlib
+
+\begin{center}
+\includegraphics<1>[width=.75\linewidth]{raw_img.pdf}
+\includegraphics<2>[width=.5\linewidth]{logo2_compressed.pdf}
+\includegraphics<2>[width=.5\linewidth]{bluesky-logo-dark.pdf}
+\end{center}
+
+** Acknowledgments
+
+- John Hunter (1968-2012)
+- Michael Droettboom
+- The whole Matplotlib development team
+  - Over 1,250+ have contributed code, many more in bug reports, feature
+    requests, and user support
+- Dora Caswell
+
+
+Recent funding from Chan Zuckerberg Initiative (2020-present)
+
+** Matplotlib
+
+*...is a comprehensive library for creating static, animated, and interactive visualizations in Python.*
+
+- Widely used through out science
+  - over 10% of arXiv has at least one Matplotlib figure (as of 2018)
+  - estimated over 1M users
+- Continuously developed for past 19 years
+  - first commit in 2003, initial work in 2001-2002
+
+
+\begin{center}
+\includegraphics[width=.75\linewidth]{timeline.pdf}
+\end{center}
+
+** Gallery
+
+
+* Why make plots?
+** What is visualization for?
+
+1. Exploratory data analysis
+   - just get the data on the screen in a way /you/ can understand as fast as
+     you can
+   - =matplotlib.pyplot=
+   - =seaborn=
+   - plotting methods on data structures (e.g. =obj.plot(...)=)
+2. Paper figures
+   - need to be /just right/
+3. Part of a standard (interactive) workflow
+   - repeatedly visualize data with same data-structure
+
+* Demos!
+** Case Study: Paper Figure
+
+- Assume:
+  - you have fabricated 25 cantilevers
+  - Varied something (called 'control') in fabrication
+- Experiment:
+  - displace away from equilibrium position by some amount
+  - release at =t=0= and watch vibrations ring down
+
+
+
+\begin{center}
+\includegraphics[width=.75\linewidth]{ho_snap.pdf}
+\end{center}
+
+
+** Interactive application (temperature)
+
+
+\begin{center}
+\includegraphics[width=.75\linewidth]{temperature_snap.pdf}
+\end{center}
+
+
+** Interactive applications (x-ray fluorescence map)
+
+\begin{center}
+\includegraphics[width=.75\linewidth]{xrf_snap.pdf}
+\end{center}
+
+* Conclusions
+** Iterative software development
+
+
+\begin{center}
+\includegraphics<1>[width=.95\linewidth]{volcano1.pdf}
+\includegraphics<2>[width=.95\linewidth]{volcano2.pdf}
+\end{center}
+
+** Future Work
+
+- On going bug fixes, incremental improvements, and maintenance
+- Improvements to Figure and Axes layout (Jody Klymak)
+- Re-designing Matplotlib's internal data model (Hannah Aizenman)
+
+** Resources
+
+This material: https://github.com/tacaswell/2021-03_APS
+
+- chat: https://gitter.im/matplotlib
+- forum: https://discourse.matplotlib.org
+- docs: https://matplotlib.org/stable
+- cheatsheets: https://github.com/matplotlib/cheatsheets
+- tutorials: https://github.com/matplotlib/interactive_tutorial,
+  https://github.com/matplotlib/AnatomyOfMatplotlib
+  https://github.com/matplotlib/GettingStarted,
+
+- _Interactive Applications Using Matplotlib_, Benjamin V. Root (2015)
+- domain-specific libraries
+
+
+- Building a maintainable plotting library (PyData NYC 2019) https://youtu.be/NV4Y75ZUDJA
+- Seperation Of Scales (PyData Gobal 2020)  https://youtu.be/P85UIuMovnI
