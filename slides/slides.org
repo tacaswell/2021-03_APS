@@ -79,18 +79,15 @@ Recent funding from Chan Zuckerberg Initiative (2020-present)
 
 * Demos!
 ** Case Study: Paper Figure
-
-- Assume:
-  - you have fabricated 25 cantilevers
-  - Varied something (called 'control') in fabrication
-- Experiment:
-  - displace away from equilibrium position by some amount
-  - release at =t=0= and watch vibrations ring down
-
+- you have 25 cantilevers, varied something (called 'control') in fabrication
+- displace away from equilibrium position and released to watch vibrations ring down
+- Goals:
+  - go from exploratory visualization to paper ready figures
+  - write reusable helper functions
 
 
 \begin{center}
-\includegraphics[width=.75\linewidth]{ho_snap.pdf}
+\includegraphics[width=.75\linewidth]{figs/step_4.3.pdf}
 \end{center}
 
 ** Step 0.0 ("just plot it")
