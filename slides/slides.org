@@ -162,7 +162,7 @@ plt.plot(d.T)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={6}
+#+attr_latex: :options highlightlines={5-6}
 #+begin_src python
 from gen_data import get_data
 import matplotlib.pyplot as plt
@@ -192,7 +192,7 @@ plt.plot(m)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={7-8}
 #+begin_src python
 from gen_data import get_data
 import matplotlib.pyplot as plt
@@ -223,7 +223,7 @@ ax.plot(m.time, m)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={5, 8, 11-13}
 #+begin_src python
 ...
 
@@ -232,9 +232,9 @@ m = d[6]
 ctrl = float(m.control)
 
 fig, ax = plt.subplots()
-
 ax.plot(m.time, m,
         label=f"C: {ctrl:.1f}")
+
 ax.legend()
 ax.set_xlabel("time (ms)")
 ax.set_ylabel("displacement (mm)")
@@ -263,19 +263,17 @@ ax.set_ylabel("displacement (mm)")
 #+attr_latex: :options highlightlines={5}
 #+begin_src python
 ...
-d = get_data(25)
 def plot_one(ax, m):
-    control = float(m.control)
-    (ln,) = ax.plot(m.time, m, label=f"C: {control:.1f}")
+    label = f'C: {float(m.control):.1f}'
+    ln, = ax.plot(m.time, m,
+                  label=label)
     return {"raw": ln}
-
 
 fig, ax = plt.subplots()
 plot_one(ax, d[0])
+plot_one(ax, d[5])
 plot_one(ax, d[-1])
-ax.legend()
-ax.set_xlabel("time (ms)")
-ax.set_ylabel("displacement (mm)")
+...
 
 #+end_src
 **** image side                                                       :BMCOL:
@@ -284,10 +282,189 @@ ax.set_ylabel("displacement (mm)")
      :END:
 
 \begin{center}
-\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\includegraphics[width=\linewidth]{figs/step_1.3.pdf}
 \end{center}
 
-** Step 0.1
+** Step 1.4
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+...
+def plot_one(ax, m, offset=0):
+    label = f'C: {float(m.control):.1f}'
+    ln, = ax.plot(m.time, m + offset,
+                  label=label)
+    return {"raw": ln}
+
+fig, ax = plt.subplots()
+plot_one(ax, d[0])
+plot_one(ax, d[5]. offset=4)
+plot_one(ax, d[-1], offset=8)
+...
+
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_1.4.pdf}
+\end{center}
+
+** Step 2.0
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+begin_src python
+from gen_data import fit
+...
+fit_vals = fit(m)
+ax.plot(
+    m.time,
+    fit_vals.sample(m.time),
+    label=fit_vals._repr_latex_(),
+    color='k'
+)
+plt.gca().set_title(
+    r"$A e^{-\zeta\omega_0t} \sin..."
+    usetex=True
+)
+...
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_2.0.pdf}
+\end{center}
+** Step 2.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+  def plot_one(ax, m, fv, offset=0):
+      fit, = ax.plot(
+          t, fv.sample(t) + offset
+      )
+      ann = ax.annotate(...)
+      ...
+
+  ...
+  plot_one(
+      ax, d[10], fit(d[10]), offset=4
+  )
+  ax.legend(ncol=3, loc="upper center")
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_2.1.pdf}
+\end{center}
+** Step 2.2
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+  def plot_one(ax, m, fv, offset=0):
+      ...
+      fit, = ax.plot(
+          t, fv.sample(t) + offset
+      )
+      ann = ax.annotate(...)
+      ...
+
+  ...
+  plot_one(
+      ax, d[10], fit(d[10]), offset=4
+  )
+  ...
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_2.2.pdf}
+\end{center}
+
+** Step 2.3
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+  ...
+  def plot_several(ax, d, fits):
+      for j, (m, fv) in enumerate(
+              zip(d, fits)
+      ):
+          plot_one(ax, m, fv, 4*j)
+      ax.set_xlabel("time (ms)")
+      ax.set_ylabel("displacement (mm)")
+
+  fig, ax = plt.subplots()
+  indx = [0, 5, 10]
+  plot_several(
+      ax, d[indx], [fit(d[i]) for i in indx]
+  )
+
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_2.3.pdf}
+\end{center}
+
+** Step 3.0
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -312,10 +489,9 @@ plt.plot(d.T)
      :END:
 
 \begin{center}
-\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\includegraphics[width=\linewidth]{figs/step_3.0.pdf}
 \end{center}
-
-** Step 0.1
+** Step 3.1
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -340,10 +516,10 @@ plt.plot(d.T)
      :END:
 
 \begin{center}
-\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\includegraphics[width=\linewidth]{figs/step_3.1.pdf}
 \end{center}
 
-** Step 0.1
+** Step 4.0
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -368,10 +544,9 @@ plt.plot(d.T)
      :END:
 
 \begin{center}
-\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\includegraphics[width=\linewidth]{figs/step_4.0.pdf}
 \end{center}
-
-** Step 0.1
+** Step 4.1
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -396,10 +571,9 @@ plt.plot(d.T)
      :END:
 
 \begin{center}
-\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\includegraphics[width=\linewidth]{figs/step_4.1.pdf}
 \end{center}
-
-** Step 0.1
+** Step 4.2
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -424,10 +598,9 @@ plt.plot(d.T)
      :END:
 
 \begin{center}
-\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\includegraphics[width=\linewidth]{figs/step_4.2.pdf}
 \end{center}
-
-** Step 0.1
+** Step 4.3
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -452,10 +625,9 @@ plt.plot(d.T)
      :END:
 
 \begin{center}
-\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\includegraphics[width=\linewidth]{figs/step_4.3.pdf}
 \end{center}
-
-** Step 0.1
+** Step 4.4
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -480,9 +652,8 @@ plt.plot(d.T)
      :END:
 
 \begin{center}
-\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\includegraphics[width=.4\linewidth]{figs/step_4.4.pdf}
 \end{center}
-
 
 ** Interactive application (temperature)
 

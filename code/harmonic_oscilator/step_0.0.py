@@ -11,5 +11,5 @@ fig, ax = plt.subplots()
 ax.plot(d)
 
 # %%
-out = Path('../../slides/figs') / Path(__file__).with_suffix('.pdf').name
+out = Path("../../slides/figs") / Path(__file__).with_suffix(".pdf").name
 fig.savefig(out)

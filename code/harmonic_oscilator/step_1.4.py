@@ -8,7 +8,7 @@ d = get_data(25)
 
 
 # %%
-def plot_one(ax, m, offset=0):):
+def plot_one(ax, m, offset=0):
     control = float(m.control)
     (ln,) = ax.plot(m.time, m + offset, label=f"C: {control:.1f}")
     return {"raw": ln}
@@ -17,8 +17,8 @@ def plot_one(ax, m, offset=0):):
 # %%
 fig, ax = plt.subplots()
 plot_one(ax, d[0])
-plot_one(ax, d[5])
-plot_one(ax, d[-1])
+plot_one(ax, d[5], offset=4)
+plot_one(ax, d[-1], offset=8)
 ax.legend()
 ax.set_xlabel("time (ms)")
 ax.set_ylabel("displacement (mm)")

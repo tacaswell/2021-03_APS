@@ -12,5 +12,5 @@ m = d[6]
 ax.plot(m)
 
 # %%
-out = Path('../../slides/figs') / Path(__file__).with_suffix('.pdf').name
+out = Path("../../slides/figs") / Path(__file__).with_suffix(".pdf").name
 fig.savefig(out)

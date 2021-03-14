@@ -9,8 +9,8 @@ d = get_data(25)
 
 # %%
 def plot_one(ax, m):
-    control = float(m.control)
-    (ln,) = ax.plot(m.time, m, label=f"C: {control:.1f}")
+    label = f"C: {float(m.control):.1f}"
+    (ln,) = ax.plot(m.time, m, label=label)
     return {"raw": ln}
 
 
