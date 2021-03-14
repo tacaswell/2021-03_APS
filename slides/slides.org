@@ -12,8 +12,10 @@
 #+LaTeX_CLASS: beamer
 #+LaTeX_CLASS_OPTIONS: [aspectratio=169]
 #+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col)
-#+LATEX_HEADER: \usepackage{pgfpages}
+#+LATEX_HEADER: \usepackage{xcolor}
 #+latex_header: \setbeamertemplate{navigation symbols}{}
+#+LATEX_HEADER: \definecolor{ForestGreen}{RGB}{64,169,64}
+#+latex_header: \setminted{linenos=true,highlightcolor=ForestGreen}
 # #+LATEX_HEADER: \setbeameroption{show notes on second screen}
 
 * Introduction
@@ -91,6 +93,396 @@ Recent funding from Chan Zuckerberg Initiative (2020-present)
 \includegraphics[width=.75\linewidth]{ho_snap.pdf}
 \end{center}
 
+** Step 0.0
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+plt.plot(d)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.0.pdf}
+\end{center}
+
+
+** Step 0.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+plt.plot(d.T)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\end{center}
+
+
+** Step 1.0
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={6}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+m = d[6]
+plt.plot(m)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_1.0.pdf}
+\end{center}
+
+
+** Step 1.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+m = d[6]
+
+fig, ax = plt.subplots()
+ax.plot(m.time, m)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_1.1.pdf}
+\end{center}
+
+** Step 1.2
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+...
+
+d = get_data()
+m = d[6]
+ctrl = float(m.control)
+
+fig, ax = plt.subplots()
+
+ax.plot(m.time, m,
+        label=f"C: {ctrl:.1f}")
+ax.legend()
+ax.set_xlabel("time (ms)")
+ax.set_ylabel("displacement (mm)")
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_1.2.pdf}
+\end{center}
+
+
+** Step 1.3
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+...
+d = get_data(25)
+def plot_one(ax, m):
+    control = float(m.control)
+    (ln,) = ax.plot(m.time, m, label=f"C: {control:.1f}")
+    return {"raw": ln}
+
+
+fig, ax = plt.subplots()
+plot_one(ax, d[0])
+plot_one(ax, d[-1])
+ax.legend()
+ax.set_xlabel("time (ms)")
+ax.set_ylabel("displacement (mm)")
+
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\end{center}
+
+** Step 0.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+plt.plot(d.T)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\end{center}
+
+** Step 0.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+plt.plot(d.T)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\end{center}
+
+** Step 0.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+plt.plot(d.T)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\end{center}
+
+** Step 0.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+plt.plot(d.T)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\end{center}
+
+** Step 0.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+plt.plot(d.T)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\end{center}
+
+** Step 0.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+plt.plot(d.T)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\end{center}
+
+** Step 0.1
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={5}
+#+begin_src python
+from gen_data import get_data
+import matplotlib.pyplot as plt
+
+d = get_data()
+plt.plot(d.T)
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_0.1.pdf}
+\end{center}
+
 
 ** Interactive application (temperature)
 
@@ -140,3 +532,8 @@ This material: https://github.com/tacaswell/2021-03_APS
 
 - Building a maintainable plotting library (PyData NYC 2019) https://youtu.be/NV4Y75ZUDJA
 - Seperation Of Scales (PyData Gobal 2020)  https://youtu.be/P85UIuMovnI
+
+- explain flouresence better
+- look at ligo notebooks ?!
+
+ligo or ETH

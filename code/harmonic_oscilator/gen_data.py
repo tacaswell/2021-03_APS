@@ -58,7 +58,7 @@ def single_get_data(t, *, ζ=0.05, ω0=5, φ=π / 2, A=2, noise_scale=0.05):
     return y
 
 
-def get_data(N=10):
+def get_data(N=10, seed=19680808):
     """
     Generate sample data set of measurements from several oscillators.
 
@@ -82,6 +82,7 @@ def get_data(N=10):
     d : xarray.DataArray
         The first dimension is *control* and the second is *time*
     """
+    np.random.seed(seed)
     t = np.linspace(0, 5 * 2 * π, 2056 * 2)
     control = np.linspace(15, 30, N)
     d = xa.DataArray(
