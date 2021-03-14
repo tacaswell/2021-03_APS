@@ -16,7 +16,7 @@ fits_df = pd.DataFrame(fits, index=d.coords["control"])
 def plot_zeta(ax, fits_df):
     ax.set_ylabel(r"$\zeta$")
     ax.set_xlabel("control (arb)")
-    ax.set_ylim(0, 0.08)
+    ax.set_ylim(0, 0.1)
     return ax.plot(
         fits_df["zeta"],
         marker="o",
@@ -29,7 +29,7 @@ def plot_zeta(ax, fits_df):
 def plot_omega(ax, fits_df):
     ax.set_ylabel(r"$\omega_0/2\pi$ (kHz)")
     ax.set_xlabel("control (arb)")
-    ax.set_ylim(0, 1.25)
+    ax.set_ylim(0, 1.5)
     return ax.plot(
         fits_df["omega"] / (2 * np.pi),
         marker="o",
@@ -144,7 +144,7 @@ fig, axs, arts, labels = paper_figure_2(
     [["raw", "omega"], ["raw", "zeta"]],
     d,
     fits,
-    plot_every=5,
+    plot_every=10,
 )
 
 

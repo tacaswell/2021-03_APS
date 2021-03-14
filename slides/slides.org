@@ -14,8 +14,8 @@
 #+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col)
 #+LATEX_HEADER: \usepackage{xcolor}
 #+latex_header: \setbeamertemplate{navigation symbols}{}
-#+LATEX_HEADER: \definecolor{ForestGreen}{RGB}{64,169,64}
-#+latex_header: \setminted{linenos=true,highlightcolor=ForestGreen}
+#+LATEX_HEADER: \definecolor{hilightcolor}{RGB}{160,219,175}
+#+latex_header: \setminted{linenos=true,highlightcolor=hilightcolor}
 # #+LATEX_HEADER: \setbeameroption{show notes on second screen}
 
 * Introduction
@@ -93,7 +93,7 @@ Recent funding from Chan Zuckerberg Initiative (2020-present)
 \includegraphics[width=.75\linewidth]{ho_snap.pdf}
 \end{center}
 
-** Step 0.0
+** Step 0.0 ("just plot it")
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -122,7 +122,7 @@ plt.plot(d)
 \end{center}
 
 
-** Step 0.1
+** Step 0.1 ("just plot it...the right direction")
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -151,7 +151,7 @@ plt.plot(d.T)
 \end{center}
 
 
-** Step 1.0
+** Step 1.0 (plot just one)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -181,7 +181,7 @@ plt.plot(m)
 \end{center}
 
 
-** Step 1.1
+** Step 1.1 (use meaningful x-axis)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -211,8 +211,7 @@ ax.plot(m.time, m)
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_1.1.pdf}
 \end{center}
-
-** Step 1.2
+** Step 1.1.1 (use =xarray='s plotting)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -223,21 +222,55 @@ ax.plot(m.time, m)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5, 8, 11-13}
+#+attr_latex: :options highlightlines={7-8}
 #+begin_src python
-...
+from gen_data import get_data
+import matplotlib.pyplot as plt
 
 d = get_data()
 m = d[6]
-ctrl = float(m.control)
 
 fig, ax = plt.subplots()
-ax.plot(m.time, m,
-        label=f"C: {ctrl:.1f}")
+m.plot(ax=ax)
 
-ax.legend()
-ax.set_xlabel("time (ms)")
-ax.set_ylabel("displacement (mm)")
+#+end_src
+**** image side                                                       :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figs/step_1.1.1.pdf}
+\end{center}
+
+
+** Step 1.2 (add legend and axis labels)
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .5
+     :END:
+#+attr_latex: :options highlightlines={9, 11-14}
+#+begin_src python
+  d = get_data()
+  m = d[6]
+  ctrl = float(m.control)
+  fig, ax = plt.subplots()
+
+  ax.plot(
+      m.time,
+      m,
+      label=f"C: {ctrl:.1f}"
+  )
+
+  ax.legend()
+  ax.set_xlabel("time (ms)")
+  ax.set_ylabel("displacement (mm)")
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -249,7 +282,7 @@ ax.set_ylabel("displacement (mm)")
 \end{center}
 
 
-** Step 1.3
+** Step 1.3 (make a function)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -260,20 +293,20 @@ ax.set_ylabel("displacement (mm)")
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={1, 9-11}
 #+begin_src python
-...
-def plot_one(ax, m):
-    label = f'C: {float(m.control):.1f}'
-    ln, = ax.plot(m.time, m,
-                  label=label)
-    return {"raw": ln}
+  def plot_one(ax, m):
+      ...
+      ln, = ax.plot(
+          m.time, m, label=label
+      )
+      ...
 
-fig, ax = plt.subplots()
-plot_one(ax, d[0])
-plot_one(ax, d[5])
-plot_one(ax, d[-1])
-...
+  fig, ax = plt.subplots()
+  plot_one(ax, d[0])
+  plot_one(ax, d[5])
+  plot_one(ax, d[-1])
+  ...
 
 #+end_src
 **** image side                                                       :BMCOL:
@@ -285,7 +318,7 @@ plot_one(ax, d[-1])
 \includegraphics[width=\linewidth]{figs/step_1.3.pdf}
 \end{center}
 
-** Step 1.4
+** Step 1.4 (add vertical offset)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -296,20 +329,20 @@ plot_one(ax, d[-1])
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={1,5,10,11}
 #+begin_src python
-...
-def plot_one(ax, m, offset=0):
-    label = f'C: {float(m.control):.1f}'
-    ln, = ax.plot(m.time, m + offset,
-                  label=label)
-    return {"raw": ln}
-
-fig, ax = plt.subplots()
-plot_one(ax, d[0])
-plot_one(ax, d[5]. offset=4)
-plot_one(ax, d[-1], offset=8)
-...
+  def plot_one(ax, m, offset=0):
+      ...
+      ln, = ax.plot(
+          m.time,
+          m + offset,
+          label=label
+      )
+      ...
+  ...
+  plot_one(ax, d[0]. offset=4)
+  plot_one(ax, d[5]. offset=8)
+  ...
 
 #+end_src
 **** image side                                                       :BMCOL:
@@ -321,7 +354,7 @@ plot_one(ax, d[-1], offset=8)
 \includegraphics[width=\linewidth]{figs/step_1.4.pdf}
 \end{center}
 
-** Step 2.0
+** Step 2.0 (fit the data)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -356,7 +389,7 @@ plt.gca().set_title(
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_2.0.pdf}
 \end{center}
-** Step 2.1
+** Step 2.1 (plot fit on data)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -367,7 +400,7 @@ plt.gca().set_title(
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={1,3,5,9}
 #+begin_src python
   def plot_one(ax, m, fv, offset=0):
       fit, = ax.plot(
@@ -375,12 +408,14 @@ plt.gca().set_title(
       )
       ann = ax.annotate(...)
       ...
-
   ...
   plot_one(
       ax, d[10], fit(d[10]), offset=4
   )
-  ax.legend(ncol=3, loc="upper center")
+  ax.legend(
+      ncol=3, loc="upper center"
+  )
+  ...
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -390,7 +425,7 @@ plt.gca().set_title(
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_2.1.pdf}
 \end{center}
-** Step 2.2
+** Step 2.2 (move control label to annotation)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -401,13 +436,10 @@ plt.gca().set_title(
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={3}
 #+begin_src python
   def plot_one(ax, m, fv, offset=0):
       ...
-      fit, = ax.plot(
-          t, fv.sample(t) + offset
-      )
       ann = ax.annotate(...)
       ...
 
@@ -426,7 +458,7 @@ plt.gca().set_title(
 \includegraphics[width=\linewidth]{figs/step_2.2.pdf}
 \end{center}
 
-** Step 2.3
+** Step 2.3 (write another function)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -437,9 +469,8 @@ plt.gca().set_title(
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={1,12}
 #+begin_src python
-  ...
   def plot_several(ax, d, fits):
       for j, (m, fv) in enumerate(
               zip(d, fits)
@@ -450,9 +481,8 @@ plt.gca().set_title(
 
   fig, ax = plt.subplots()
   indx = [0, 5, 10]
-  plot_several(
-      ax, d[indx], [fit(d[i]) for i in indx]
-  )
+  fits = [fit(d[i]) for i in indx]
+  plot_several(ax, d[indx], fits)
 
 #+end_src
 **** image side                                                       :BMCOL:
@@ -464,7 +494,7 @@ plt.gca().set_title(
 \includegraphics[width=\linewidth]{figs/step_2.3.pdf}
 \end{center}
 
-** Step 3.0
+** Step 3.0 (look at $\omega_0$ and $\zeta$)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -475,13 +505,20 @@ plt.gca().set_title(
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={1,9}
 #+begin_src python
-from gen_data import get_data
-import matplotlib.pyplot as plt
+import pandas as pd
 
-d = get_data()
-plt.plot(d.T)
+fits_df = pd.DataFrame(
+    [fit(m) for m in d],
+    index=d.coords["control"]
+)
+
+fig, ax = plt.subplots()
+fits_df.plot(
+    y=["zeta", "omega"], ax=ax
+)
+
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -491,7 +528,7 @@ plt.plot(d.T)
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_3.0.pdf}
 \end{center}
-** Step 3.1
+** Step 3.1 (helper functions for $\omega_0$ and $\zeta$ plots)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -502,13 +539,22 @@ plt.plot(d.T)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
-#+begin_src python
-from gen_data import get_data
-import matplotlib.pyplot as plt
 
-d = get_data()
-plt.plot(d.T)
+#+begin_src python
+  def plot_zeta(ax, fits_df):
+      ax.set_xlabel(...)
+      ax.set_ylabel(...)
+      return ax.plot(...)
+
+  def plot_omega(ax, fits_df):
+      ax.set_xlabel(...)
+      ax.set_ylabel(...)
+      return ax.plot(...)
+
+  fig, (ax1, ax2) = plt.subplots(2, 1)
+  plot_zeta(ax1, fits_df)
+  plot_omega(ax2, fits_df)
+
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -519,7 +565,7 @@ plt.plot(d.T)
 \includegraphics[width=\linewidth]{figs/step_3.1.pdf}
 \end{center}
 
-** Step 4.0
+** Step 4.0 (put it all together)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -530,13 +576,21 @@ plt.plot(d.T)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={6,11,12}
 #+begin_src python
-from gen_data import get_data
-import matplotlib.pyplot as plt
+indx = [0, 10, 24]
 
-d = get_data()
-plt.plot(d.T)
+fig, (ax1, ax2, ax3) = plt.subplots(
+    1, 3, constrained_layout=True
+)
+plot_several(
+    ax1,
+    d[indx],
+    [fits[i] for i in indx]
+)
+plot_zeta(ax2, fits_df)
+plot_omega(ax3, fits_df)
+
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -546,7 +600,7 @@ plt.plot(d.T)
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_4.0.pdf}
 \end{center}
-** Step 4.1
+** Step 4.1 (improve the layout)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -557,13 +611,23 @@ plt.plot(d.T)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={2-3,8,12,13}
 #+begin_src python
-from gen_data import get_data
-import matplotlib.pyplot as plt
+fig, ad = plt.subplot_mosaic(
+    [["raw", "omega"],
+     ["raw", "zeta" ]],
+    constrained_layout=True
+)
+indx = [0, 10, 24]
+plot_several(
+    ad["raw"],
+    d[indx],
+    [fits[i] for i in indx]
+)
+plot_zeta(ad["zeta"], fits_df)
+plot_omega(ad["omega"], fits_df)
 
-d = get_data()
-plt.plot(d.T)
+
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -573,7 +637,7 @@ plt.plot(d.T)
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_4.1.pdf}
 \end{center}
-** Step 4.2
+** Step 4.2 (label the subplots)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -584,13 +648,19 @@ plt.plot(d.T)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={1,11}
 #+begin_src python
-from gen_data import get_data
-import matplotlib.pyplot as plt
+def subplot_label(ax, text):
+     return ax.annotate(text, ...)
 
-d = get_data()
-plt.plot(d.T)
+spm = {
+    "raw": "a",
+    "omega": "b",
+    "zeta": "c"
+}
+
+for k, v in spm.items():
+    subplot_label(ad[k], f"({v})")
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -600,7 +670,7 @@ plt.plot(d.T)
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_4.2.pdf}
 \end{center}
-** Step 4.3
+** Step 4.3 (set the size to journal specifications)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -611,13 +681,25 @@ plt.plot(d.T)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
-#+begin_src python
-from gen_data import get_data
-import matplotlib.pyplot as plt
 
-d = get_data()
-plt.plot(d.T)
+#+attr_latex: :options highlightlines={9}
+#+begin_src python
+def paper_figure_2(
+    fig, layout, d, fits, plot_every
+):
+   ...
+
+dcw = 17.8 / 2.54
+paper_figure_2(
+    plt.figure(
+        figsize=(dcw, dcw * 0.5)
+    ),
+    [["raw", "omega"], ["raw", "zeta"]],
+    d,
+    fits,
+    plot_every=10,
+)
+
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -627,7 +709,7 @@ plt.plot(d.T)
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_4.3.pdf}
 \end{center}
-** Step 4.4
+** Step 4.4 (try a one column layout)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -638,13 +720,18 @@ plt.plot(d.T)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={4,6}
 #+begin_src python
-from gen_data import get_data
-import matplotlib.pyplot as plt
-
-d = get_data()
-plt.plot(d.T)
+scw = 8.6 / 2.54
+paper_figure_2(
+    plt.figure(
+        figsize=(scw, scw * 2.5)
+    ),
+    [["raw"], ["omega"], ["zeta"]],
+    d,
+    fits,
+    plot_every=10,
+)
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
