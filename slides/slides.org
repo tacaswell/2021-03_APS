@@ -5,7 +5,7 @@
 #+DESCRIPTION:
 #+KEYWORDS:
 #+LANGUAGE:  en
-#+OPTIONS:   H:2 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   H:2 num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t
 #+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
 #+STARTUP: beamer
 
@@ -52,15 +52,23 @@ Recent funding from Chan Zuckerberg Initiative (2020-present)
 *...is a comprehensive library for creating static, animated, and interactive visualizations in Python.*
 
 - Widely used through out science
-  - over 10% of arXiv has at least one Matplotlib figure (as of 2018)
-  - estimated over 1M users
-- Continuously developed for past 19 years
-  - first commit in 2003, initial work in 2001-2002
+  - LIGO, EHT, LSST, NSLS-II, APS, ALS, SPT, STSci, ATLAS, Mars rovers, ...
+  - Single PI labs in physics, chemistry, oceanography, meteorology, biology, ...
 
 
 \begin{center}
-\includegraphics[width=.75\linewidth]{timeline.pdf}
+\includegraphics[width=.45\linewidth]{ligo}
+\includegraphics[width=.45\linewidth]{EHT}
 \end{center}
+
+
+\setbeamerfont{smol}{size=\tiny}
+\usebeamerfont{smol}
+https://www.facebook.com/photo.php?fbid=10213321822457967
+
+https://mybinder.org/v2/gh/losc-tutorial/quickview/master
+
+https://github.com/losc-tutorial/quickview
 
 
 * Why make plots?
@@ -69,13 +77,18 @@ Recent funding from Chan Zuckerberg Initiative (2020-present)
 1. Exploratory data analysis
    - just get the data on the screen in a way /you/ can understand as fast as
      you can
-   - =matplotlib.pyplot=
-   - =seaborn=
-   - plotting methods on data structures (e.g. =obj.plot(...)=)
 2. Paper figures
    - need to be /just right/
 3. Part of a standard (interactive) workflow
-   - repeatedly visualize data with same data-structure
+   - repeatedly visualize and explore similar data
+
+
+\begin{center}
+\includegraphics[width=.32\linewidth]{figs/step_1.1.1.pdf}
+\includegraphics[width=.32\linewidth]{figs/step_4.2.pdf}
+\includegraphics[width=.32\linewidth]{xrf_snap.pdf}
+\end{center}
+
 
 * Demos!
 ** Case Study: Paper Figure
@@ -109,6 +122,9 @@ import matplotlib.pyplot as plt
 d = get_data()
 plt.plot(d)
 #+end_src
+
+- <2-> #accidentalart
+
 **** image side                                                       :BMCOL:
      :PROPERTIES:
      :BEAMER_col: .5
@@ -138,6 +154,9 @@ import matplotlib.pyplot as plt
 d = get_data()
 plt.plot(d.T)
 #+end_src
+
+
+
 **** image side                                                       :BMCOL:
      :PROPERTIES:
      :BEAMER_col: .5
@@ -326,7 +345,7 @@ m.plot(ax=ax)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={1,5,10,11}
+#+attr_latex: :options highlightlines={1,5,10-12}
 #+begin_src python
   def plot_one(ax, m, offset=0):
       ...
@@ -337,8 +356,9 @@ m.plot(ax=ax)
       )
       ...
   ...
-  plot_one(ax, d[0]. offset=4)
-  plot_one(ax, d[5]. offset=8)
+  plot_one(ax, d[0]. offset=0)
+  plot_one(ax, d[5]. offset=4)
+  plot_one(ax, d[-1]. offset=8)
   ...
 
 #+end_src
@@ -445,6 +465,7 @@ plt.gca().set_title(
       ax, d[10], fit(d[10]), offset=4
   )
   ...
+
 #+end_src
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -477,7 +498,7 @@ plt.gca().set_title(
       ax.set_ylabel("displacement (mm)")
 
   fig, ax = plt.subplots()
-  indx = [0, 5, 10]
+  indx = [0, 5, 24]
   fits = [fit(d[i]) for i in indx]
   plot_several(ax, d[indx], fits)
 
@@ -739,6 +760,34 @@ paper_figure_2(
 \includegraphics[width=.4\linewidth]{figs/step_4.4.pdf}
 \end{center}
 
+** Case Study Summary
+- Went from initial exploratory look at data to a paper-ready figure
+- Iterative built a mini-library for *this* experiment
+
+\begin{center}
+\includegraphics[width=.45\linewidth]{figs/step_0.1.pdf}
+\includegraphics[width=.45\linewidth]{figs/step_4.2.pdf}
+\end{center}
+
+** Interactive Visualizations
+
+- Matplotlib has framework-agnostic UI tools to get mouse and keyboard events
+- several third-party-packages with more complex interactions
+ - mplcursors https://mplcursors.readthedocs.io/en/stable/
+ - MplDataCursor https://github.com/joferkington/mpldatacursor
+ - mpl_interactions https://mpl-interactions.readthedocs.io/en/latest/
+
+\vspace
+
+ #+BEGIN_CENTER
+ *LIVE DEMO TIME*
+ #+END_CENTER
+
+** Hello world
+
+- =fig.ginput= in a terminal
+- handle mouse click events in a Jupyter notebook
+
 ** Interactive application (temperature)
 
 
@@ -776,9 +825,10 @@ This material: https://github.com/tacaswell/2021-03_APS
 - cheatsheets: https://github.com/matplotlib/cheatsheets
 - chat: https://gitter.im/matplotlib
 - forum: https://discourse.matplotlib.org
-- tutorials: https://github.com/matplotlib/interactive_tutorial,
-  https://github.com/matplotlib/AnatomyOfMatplotlib
-  https://github.com/matplotlib/GettingStarted
+- tutorials:
+ - https://github.com/matplotlib/interactive_tutorial,
+ - https://github.com/matplotlib/AnatomyOfMatplotlib
+ - https://github.com/matplotlib/GettingStarted
 
 
 - _Interactive Applications Using Matplotlib_, Benjamin V. Root (2015)
@@ -787,8 +837,3 @@ This material: https://github.com/tacaswell/2021-03_APS
 
 - Building a maintainable plotting library (PyData NYC 2019) https://youtu.be/NV4Y75ZUDJA
 - Seperation Of Scales (PyData Gobal 2020)  https://youtu.be/P85UIuMovnI
-
-- explain flouresence better
-- look at ligo notebooks ?!
-
-ligo or ETH

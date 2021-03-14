@@ -51,7 +51,7 @@ def plot_several(ax, d, fits):
 
 
 fig, ax = plt.subplots()
-indx = [0, 5, 10]
+indx = [0, 5, 24]
 plot_several(ax, d[indx], [fit(d[i]) for i in indx])
 
 # %%
