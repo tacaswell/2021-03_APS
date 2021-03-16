@@ -44,8 +44,14 @@
     requests, and user support
 - Dora Caswell
 
+\vfill
 
-Recent funding from Chan Zuckerberg Initiative (2020-present)
+\setbeamerfont{smol}{size=\tiny}
+\usebeamerfont{smol}
+
+This project has been made possible in part by grant number 2019-207333 from
+the Chan Zuckerberg Initiative DAF, an advised fund of Silicon Valley Community
+Foundation.
 
 ** Matplotlib
 
@@ -75,12 +81,12 @@ https://github.com/losc-tutorial/quickview
 ** What is visualization for?
 
 1. Exploratory data analysis
-   - just get the data on the screen in a way /you/ can understand as fast as
+   - Just get the data on the screen in a way /you/ can understand as fast as
      you can
 2. Paper figures
-   - need to be /just right/
+   - Need to be /just right/
 3. Part of a standard (interactive) workflow
-   - repeatedly visualize and explore similar data
+   - Repeatedly visualize and explore similar data
 
 
 \begin{center}
@@ -92,8 +98,8 @@ https://github.com/losc-tutorial/quickview
 
 * Demos!
 ** Case Study: Paper Figure
-- you have 25 cantilevers, varied something (called 'control') in fabrication
-- displace away from equilibrium position and released to watch vibrations ring down
+- You have 25 cantilevers, varied something (called 'control') in fabrication
+- Displace away from equilibrium position and released to watch vibrations ring down
 - Goals:
   - go from exploratory visualization to paper ready figures
   - write reusable helper functions
@@ -119,11 +125,12 @@ https://github.com/losc-tutorial/quickview
 from gen_data import get_data
 import matplotlib.pyplot as plt
 
+# d is an xarray.DataArray
 d = get_data()
 plt.plot(d)
 #+end_src
 
-- <2-> #accidentalart
+- <2-> #accidental art
 
 **** image side                                                       :BMCOL:
      :PROPERTIES:
@@ -146,11 +153,12 @@ plt.plot(d)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5}
+#+attr_latex: :options highlightlines={6}
 #+begin_src python
 from gen_data import get_data
 import matplotlib.pyplot as plt
 
+# d is an xarray.DataArray
 d = get_data()
 plt.plot(d.T)
 #+end_src
@@ -178,12 +186,14 @@ plt.plot(d.T)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={5-6}
+#+attr_latex: :options highlightlines={6-7}
 #+begin_src python
 from gen_data import get_data
 import matplotlib.pyplot as plt
 
+# d is an xarray.DataArray
 d = get_data()
+# pick out an abitrary row
 m = d[6]
 plt.plot(m)
 #+end_src
@@ -197,7 +207,7 @@ plt.plot(m)
 \end{center}
 
 
-** Step 1.1 (use meaningful x-axis)
+** Step 1.1 (use meaningful x-axis, move to explicit API)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -219,6 +229,9 @@ m = d[6]
 fig, ax = plt.subplots()
 ax.plot(m.time, m)
 #+end_src
+
+- Use the explicit API to determine which =Axes= plots go on rather than the
+  implicit =pyplot= API.
 **** image side                                                       :BMCOL:
      :PROPERTIES:
      :BEAMER_col: .5
@@ -227,7 +240,7 @@ ax.plot(m.time, m)
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_1.1.pdf}
 \end{center}
-** Step 1.1.1 (use =xarray='s plotting)
+** Step 1.1.1 (use =xarray='s plotting for a quick view)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -238,18 +251,24 @@ ax.plot(m.time, m)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={7-8}
+#+attr_latex: :options highlightlines={10}
 #+begin_src python
 from gen_data import get_data
 import matplotlib.pyplot as plt
 
+# d is an xarray.DataArray
 d = get_data()
+# pick out an abitrary row
 m = d[6]
 
 fig, ax = plt.subplots()
 m.plot(ax=ax)
 
 #+end_src
+
+- The =xarray.DataArray= knows enough about itself to plot against time, label
+  the x-axis, and set the title.
+
 **** image side                                                       :BMCOL:
      :PROPERTIES:
      :BEAMER_col: .5
@@ -334,7 +353,7 @@ m.plot(ax=ax)
 \includegraphics[width=\linewidth]{figs/step_1.3.pdf}
 \end{center}
 
-** Step 1.4 (add vertical offset)
+** Step 1.4 (add vertical offset to your function)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -429,7 +448,7 @@ plt.gca().set_title(
   plot_one(
       ax, d[10], fit(d[10]), offset=4
   )
-  ax.legend(
+  ax.legend(n
       ncol=3, loc="upper center"
   )
   ...
@@ -442,7 +461,7 @@ plt.gca().set_title(
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_2.1.pdf}
 \end{center}
-** Step 2.2 (move control label to annotation)
+** Step 2.2 (eliminate need for legend box)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -476,7 +495,7 @@ plt.gca().set_title(
 \includegraphics[width=\linewidth]{figs/step_2.2.pdf}
 \end{center}
 
-** Step 2.3 (write another function)
+** Step 2.3 (wrap plotting multiple curves with offsets and fits in a function)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -512,7 +531,7 @@ plt.gca().set_title(
 \includegraphics[width=\linewidth]{figs/step_2.3.pdf}
 \end{center}
 
-** Step 3.0 (look at $\omega_0$ and $\zeta$)
+** Step 3.0 (first look at $\omega_0$ and $\zeta$)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
     :BEAMER_env: columns
@@ -538,6 +557,10 @@ fits_df.plot(
 )
 
 #+end_src
+
+ - uses the column names for legend
+ - uses index for x-axis/label
+
 **** image side                                                       :BMCOL:
      :PROPERTIES:
      :BEAMER_col: .5
@@ -546,6 +569,7 @@ fits_df.plot(
 \begin{center}
 \includegraphics[width=\linewidth]{figs/step_3.0.pdf}
 \end{center}
+
 ** Step 3.1 (helper functions for $\omega_0$ and $\zeta$ plots)
 *** col place holder                                              :B_columns:
     :PROPERTIES:
@@ -803,7 +827,7 @@ paper_figure_2(
 \end{center}
 
 * Conclusions
-** Iterative software development
+** Software Development Philosophy
 
 
 \begin{center}
