@@ -3,3 +3,4 @@ scipy
 pandas
 xarray
 h5py
+ipympl
