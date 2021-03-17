@@ -103,7 +103,14 @@ class XRFInteract(object):
             zorder=self.im.get_zorder(),
         )
         self.mask_im.mouseover = False  # do not consider for mouseover text
-
+        (self.overlay_plot,) = self.ax_im.plot(
+            [],
+            [],
+            marker="o",
+            markersize=5,
+            markerfacecolor="none",
+            markeredgecolor="red",
+        )
         # set up the spectrum, to start average everything
         (self.spec,) = self.ax_spec.plot(self.counts.mean(axis=(0, 1)), lw=2)
 
@@ -135,6 +142,7 @@ class XRFInteract(object):
         ax = event.inaxes
         if ax is None or ax.get_gid() != "imgmap":
             return
+        self.overlay_plot.set_data([], [])
         # if right click, clear ROI
         if event.button == 3:
             return self._reset_spectrum()
@@ -159,6 +167,7 @@ class XRFInteract(object):
     def _pixel_select(self, event):
 
         x, y = event.xdata, event.ydata
+        self.overlay_plot.set_data([x], [y])
         # get index by assuming even spacing
         # TODO use kdtree?
         diff = np.hypot((self.x_pos - x), (self.y_pos - y))
@@ -167,7 +176,7 @@ class XRFInteract(object):
         # get the spectrum for this point
         new_y_data = self.counts[y_ind, x_ind, :]
         self.mask = np.zeros(self.x_pos.shape, dtype="bool")
-        self.mask[y_ind, x_ind] = True
+        # self.mask[y_ind, x_ind] = True
         self.mask_im.set_data(self._overlay_image)
         self._pixel_txt.set_text(
             "pixel: [{:d}, {:d}] ({:.3g}, {:.3g})".format(
