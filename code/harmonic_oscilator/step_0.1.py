@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 d = get_data(25)
 
 # %%
+fig, ax = plt.subplots()
 plt.plot(d.T)
 
 # %%

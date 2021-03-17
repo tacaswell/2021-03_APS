@@ -440,7 +440,7 @@ ax.plot(
     label=fit_vals._repr_latex_(),
     color='k'
 )
-plt.gca().set_title(
+ax.set_title(
     r"$A e^{-\zeta\omega_0t} \sin..."
     usetex=True
 )

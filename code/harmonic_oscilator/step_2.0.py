@@ -12,7 +12,7 @@ fit_vals = fit(m)
 
 fig, ax = plt.subplots()
 ax.plot(m.time, fit_vals.sample(m.time), label=fit_vals._repr_latex_(), color="k")
-plt.gca().set_title(
+ax.set_title(
     r"$A e^{-\zeta\omega_0t} \sin\left(\sqrt{1 - \zeta^2}\omega_0t + \varphi\right)$",
     usetex=True,
 )

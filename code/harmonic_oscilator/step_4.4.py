@@ -52,7 +52,7 @@ def plot_one(ax, m, fit_vals, offset=0):
     ann = ax.annotate(
         (
             f"$C={control:.1f}$\n"
-            f"$\\zeta={fit_vals.zeta:.2g}$ $\\omega_0={fit_vals.omega:.2f}$"
+            f"$\\zeta={fit_vals.zeta:.2g}$, $\\omega_0={fit_vals.omega:.2f}$"
         ),
         # units are (axes-fraction, data)
         xy=(0.95, offset + 0.5),

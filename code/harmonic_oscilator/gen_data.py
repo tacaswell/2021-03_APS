@@ -76,7 +76,7 @@ def get_data(N=25, seed=19680808):
     ----------
     N : int
         The number of sample datasets to generate.
-        
+
     seed : int
         The seed to use pass to `np.random.seed`.  This ensures the reproducibility of
         the data generation.
