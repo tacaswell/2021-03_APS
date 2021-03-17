@@ -39,13 +39,38 @@
 
 ** Acknowledgments
 
+*** col place holder                                              :B_columns:
+    :PROPERTIES:
+    :BEAMER_env: columns
+    :BEAMER_opt: t
+    :END:
+
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .7
+     :END:
+
+
 - John Hunter (1968-2012)
 - Michael Droettboom
-- The whole Matplotlib development team
-  - Over 1,250+ have contributed code, many more in bug reports, feature
-    requests, and user support
+- The whole Matplotlib development team!
+  - Over 1,250+ people have contributed code
+  - Many more in bug reports, feature requests, packaging, and user support
 - Dora Caswell
 
+**** code side                                                        :BMCOL:
+     :PROPERTIES:
+     :BEAMER_col: .3
+     :END:
+\begin{center}
+\includegraphics[width=\linewidth]{contrib_wc.png}
+\end{center}
+
+
+*** @@latex:@@                     :B_block:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :END:
 \vfill
 
 \setbeamerfont{smol}{size=\tiny}
@@ -100,7 +125,7 @@ https://github.com/losc-tutorial/quickview
 
 * Demos!
 ** Case Study: Paper Figure
-- You have 25 cantilevers, varied something (called 'control') in fabrication
+- You have 25 cantilevers, varied something (called `control') in fabrication
 - Displace away from equilibrium position and released to watch vibrations ring down
 - Goals:
   - go from exploratory visualization to paper ready figures
@@ -807,9 +832,9 @@ paper_figure_2(
 
 \vspace
 
- #+BEGIN_CENTER
- *LIVE DEMO TIME*
- #+END_CENTER
+#+BEGIN_CENTER
+*LIVE DEMO TIME*
+#+END_CENTER
 
 ** Hello world
 
