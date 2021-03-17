@@ -94,7 +94,8 @@ class AggregatedTimeTrace:
             self.yearly_ax,
             self.data_by_month,
             self.label,
-            picker=5,
+            picker=True,
+            pickradius=5,
             **next(self.style_cycle),
         )
 
@@ -175,7 +176,12 @@ class AggregatedTimeTrace:
             return
         # plot the data
         eb, fill = plot_aggregated_errorbar(
-            self.monthly_ax, df, label, picker=5, **next(self.style_cycle)
+            self.monthly_ax,
+            df,
+            label,
+            picker=True,
+            pickradius=5,
+            **next(self.style_cycle),
         )
         # set the gid of the line (which is what will be picked) to label
         eb[0].set_gid(label)
@@ -191,8 +197,15 @@ class AggregatedTimeTrace:
         # format the label
         label = "{:s}: {:04d}-{:02d}-{:02d}".format(self.label, year, month, day)
         # A 'simple' plot
-        self.daily_ax.plot(
-            "T", "-", picker=10, label=label, data=df, **next(self.style_cycle)
+        (ln,) = self.daily_ax.plot(
+            "T",
+            linestyle="-",
+            picker=True,
+            pickradius=10,
+            label=label,
+            data=df,
+            **next(self.style_cycle),
+        )
         )
         # update the legend
         self.daily_ax.legend()
