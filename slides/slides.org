@@ -1,7 +1,7 @@
 #+TITLE:     Matplotlib and Scientific Visualization
 #+AUTHOR:    Thomas A Caswell
 #+EMAIL:     tcaswell@gmail.com, tcaswell@bnl.gov
-#+DATE:      2021-03-17
+#+DATE:      APS March Meeting 2021 | Session L61 | 2021-03-17
 #+DESCRIPTION:
 #+KEYWORDS:
 #+LANGUAGE:  en
@@ -17,6 +17,8 @@
 #+LATEX_HEADER: \definecolor{hilightcolor}{RGB}{160,219,175}
 #+latex_header: \setminted{linenos=true,highlightcolor=hilightcolor}
 # #+LATEX_HEADER: \setbeameroption{show notes on second screen}
+#+LATEX_HEADER: \institute[BNL]{Brookhaven National Laboratory | Matplotlib}
+
 
 * Introduction
 ** Who am I?
