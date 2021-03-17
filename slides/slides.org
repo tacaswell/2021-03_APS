@@ -218,12 +218,14 @@ plt.plot(m)
      :PROPERTIES:
      :BEAMER_col: .5
      :END:
-#+attr_latex: :options highlightlines={7-8}
+#+attr_latex: :options highlightlines={9-10}
 #+begin_src python
 from gen_data import get_data
 import matplotlib.pyplot as plt
 
+# d is an xarray.DataArray
 d = get_data()
+# pick out an abitrary row
 m = d[6]
 
 fig, ax = plt.subplots()
@@ -375,9 +377,9 @@ m.plot(ax=ax)
       )
       ...
   ...
-  plot_one(ax, d[0]. offset=0)
-  plot_one(ax, d[5]. offset=4)
-  plot_one(ax, d[-1]. offset=8)
+  plot_one(ax, d[0], offset=0)
+  plot_one(ax, d[5], offset=4)
+  plot_one(ax, d[-1], offset=8)
   ...
 
 #+end_src
