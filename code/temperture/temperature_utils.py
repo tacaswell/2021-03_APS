@@ -1,5 +1,6 @@
 import datetime
 from pathlib import Path
+import itertools
 
 from cycler import cycler
 import matplotlib.pyplot as plt
@@ -160,7 +161,10 @@ class AggregatedTimeTrace:
         # grab the canvas
         canvas = event.artist.figure.canvas
         # remove the artist
-        event.artist.remove()
+        label = event.artist.get_label()
+        for a in self.hourly_artiists.pop(label, []):
+            a.remove()
+
         # update the legend
         self.daily_ax.legend()
         # redraw the canvas next time it is convenient
@@ -185,8 +189,14 @@ class AggregatedTimeTrace:
         )
         # set the gid of the line (which is what will be picked) to label
         eb[0].set_gid(label)
+        # add a marker to year ax to show where we are plotting
+        mark = self.yearly_ax.axvline(
+            datetime.datetime(year, month, 15),
+            color=eb[0].get_color(),
+            zorder=15,
+        )
         # stash the artists so we can remove them later
-        self.daily_artists[label] = [eb, fill]
+        self.daily_artists[label] = [eb, fill, mark]
         # stash the dates associated with the points so we can use in
         # plotting later
         self.daily_index[label] = df["index"]
@@ -196,6 +206,9 @@ class AggregatedTimeTrace:
         df = extract_day_of_hourly(self.data_by_hour, year, month, day)
         # format the label
         label = "{:s}: {:04d}-{:02d}-{:02d}".format(self.label, year, month, day)
+        if label is self.hourly_artiists:
+            return
+
         # A 'simple' plot
         (ln,) = self.daily_ax.plot(
             "T",
@@ -206,15 +219,24 @@ class AggregatedTimeTrace:
             data=df,
             **next(self.style_cycle),
         )
+        # put marker on the monthly plot
+        (mark,) = self.monthly_ax.plot(
+            day - 1, df["T"].mean(), marker="o", zorder=15, color=ln.get_color()
         )
         # update the legend
         self.daily_ax.legend()
         # ask the GUI to redraw the next time it can
         self.daily_ax.figure.canvas.draw_idle()
+        self.hourly_artiists[label] = [ln, mark]
 
     def remove(self):
         for art in self.yearly_art:
             art.remove()
+        for _, arts in itertools.chain(
+            self.daily_artists.items(), self.hourly_artiists.items()
+        ):
+            for a in arts:
+                a.remove()
         self.yearly_art = None
         self.yearly_ax.figure.canvas.mpl_disconnect(self.cid)
 
