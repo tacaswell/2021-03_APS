@@ -1,5 +1,7 @@
 # Matplotlib and Scientific Visualization
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/tacaswell/2021-03_APS/main?urlpath=lab)
+
 ## Abstract L61.00005
 
 Data visualization is critical to understanding data in physics. Visualization
