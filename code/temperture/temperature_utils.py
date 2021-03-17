@@ -147,11 +147,10 @@ class AggregatedTimeTrace:
             return
         # else, loop through the points we hit and plot the daily
         for i in event.ind:
-            print(f"{label=} {i=}")
             try:
                 sel_date = self.daily_index[label][i]
             except KeyError:
-                print(f"failed on {label=} {i=}")
+                ...
             else:
                 self._plot_T_by_hour(sel_date.year, sel_date.month, sel_date.day)
 
