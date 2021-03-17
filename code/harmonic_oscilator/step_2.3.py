@@ -49,6 +49,7 @@ def plot_several(ax, d, fits):
 
     return out
 
+# %%
 
 fig, ax = plt.subplots()
 indx = [0, 5, 24]

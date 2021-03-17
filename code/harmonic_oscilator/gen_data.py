@@ -58,7 +58,7 @@ def single_get_data(t, *, ζ=0.05, ω0=5, φ=π / 2, A=2, noise_scale=0.05):
     return y
 
 
-def get_data(N=10, seed=19680808):
+def get_data(N=25, seed=19680808):
     """
     Generate sample data set of measurements from several oscillators.
 
@@ -76,6 +76,10 @@ def get_data(N=10, seed=19680808):
     ----------
     N : int
         The number of sample datasets to generate.
+        
+    seed : int
+        The seed to use pass to `np.random.seed`.  This ensures the reproducibility of
+        the data generation.
 
     Returns
     -------
