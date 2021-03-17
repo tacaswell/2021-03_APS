@@ -4,3 +4,4 @@ pandas
 xarray
 h5py
 ipympl
+tables
