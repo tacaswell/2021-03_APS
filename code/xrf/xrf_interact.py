@@ -49,15 +49,15 @@ class XRFInteract(object):
         fig.canvas.set_window_title("XRF map")
         self.fig = fig
         # set up the figure layout
-        gs = gridspec.GridSpec(2, 1, height_ratios=[4, 1])
+        gs = gridspec.GridSpec(2, 1, height_ratios=[4, 1], figure=fig)
 
         # set up the top panel (the map)
         self.ax_im = fig.add_subplot(gs[0, 0], gid="imgmap")
         self.ax_im.set_xlabel("x [?]")
         self.ax_im.set_ylabel("y [?]")
         self.ax_im.set_title(
-            "shift-click to select pixel, "
-            "alt-drag to draw region, "
+            "shift-click to select pixel\n"
+            "alt-drag to draw region\n"
             "right-click to reset"
         )
 
@@ -66,7 +66,7 @@ class XRFInteract(object):
         self.ax_spec.set_ylabel("counts [?]")
         self.ax_spec.set_xlabel("bin number")
         self.ax_spec.set_yscale("log")
-        self.ax_spec.set_title("click-and-drag to select energy region")
+        self.ax_spec.set_title("click-and-drag to select energy ROI")
         self._EROI_txt = self.ax_spec.annotate(
             "ROI: all",
             xy=(0, 1),
@@ -77,10 +77,11 @@ class XRFInteract(object):
         self._pixel_txt = self.ax_spec.annotate(
             "map average",
             xy=(1, 1),
-            xytext=(0, 5),
+            xytext=(0, -5),
             xycoords="axes fraction",
             textcoords="offset points",
             ha="right",
+            va="top",
         )
 
         # show the initial image
@@ -207,7 +208,7 @@ class XRFInteract(object):
         self.fig.canvas.draw_idle()
 
 
-def show_xrf(fn):
+def show_xrf(fn, fig=None):
     F = h5py.File(fn, "r")
     g = F["xrfmap"]
 
@@ -215,6 +216,7 @@ def show_xrf(fn):
         g["detsum"]["counts"][:],
         g["positions"]["pos"][:],
         norm=g["scalers"]["val"][:, :, 0],
+        fig=fig,
     )
 
     return xrf
